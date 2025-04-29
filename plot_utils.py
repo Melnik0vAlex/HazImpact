@@ -13,15 +13,14 @@ def _make_custom_cmap() -> LinearSegmentedColormap:
 
 
 def plot_dose_with_contours(
-    x: NDArray,
-    y_full: NDArray,
-    dose_full: NDArray,
+    x: np.ndarray,
+    y_full: np.ndarray,
+    dose_full: np.ndarray,
     levels: list[float],
+    title: str = "Поле токсодозы"
 ) -> None:
     """
     Отрисовывает тепловую карту токсодозы D(x, y) с изолиниями *levels*.
-    **Требование наличия y = 0 убрано** — функция работает с любым
-    симметричным либо произвольным набором значений `y_full`.
 
     Параметры
     ----------
@@ -30,6 +29,7 @@ def plot_dose_with_contours(
                Может не содержать 0.
     dose_full: 2-D массив формы (len(y_full), len(x)) — значения доз.
     levels   : список уровней доз (мг·мин/л) для построения изолиний.
+    title    : заголовок графика (по умолчанию "Поле токсодозы").
     """
     # Создаём сетку
     X, Y = np.meshgrid(x, y_full, indexing="xy")
@@ -59,14 +59,12 @@ def plot_dose_with_contours(
     )
 
     # Подписи осей и прочий «косметический» минимум
-    ax.set_title("Поле токсодозы")
+    ax.set_title(title)
     ax.set_xlabel("Расстояние вдоль ветра, м")
     ax.set_ylabel("Расстояние поперёк ветра, м")
-    ax.set_aspect("equal", adjustable="box")  # квадратные клетки
+    ax.set_aspect("equal", adjustable="box")
     fig.tight_layout()
     plt.show()
-
-
 def plot_conc_doze_Ox(x: NDArray, conc: NDArray, dose: NDArray) -> None:
     """
     Профили максимальной концентрации и токсодозы вдоль оси факела.
